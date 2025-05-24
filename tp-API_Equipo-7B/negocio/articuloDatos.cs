@@ -40,7 +40,7 @@ namespace negocio
             }
             return articulos;
         }
-       
+
         public void setArticleData(Articulo tempArticle, SqlDataReader data)
         {
             imagenesDatos imagenes = new imagenesDatos();
@@ -117,6 +117,12 @@ namespace negocio
             }
         }
 
+        /// <summary>
+        /// Genera un código de producto, a partir de la marca que le pasemos
+        /// Inicial de la marca + un número
+        /// </summary>
+        /// <param name="marca"></param>
+        /// <returns></returns>
         public string generateCode(string marca)
         {
             string inicialMarca = marca.Substring(0, 1).ToUpper();
@@ -142,6 +148,39 @@ namespace negocio
             }
 
             return inicialMarca + codigoMarca;
+        }
+
+        /// <summary>
+        /// Obtiene el ID del artículo dentro de la base de datos.
+        /// </summary>
+        /// <param name="articulo"></param>
+        /// <returns></returns>
+        public int getId(Articulo articulo)
+        {
+            database db = new database();
+            try
+            {
+                db.setQuery("SELECT Id FROM Articulos WHERE Codigo = @codigo");
+                db.setParameter("@codigo", articulo.Codigo);
+                db.execQuery();
+
+                if (db.Lector.Read())
+                {
+                    return (int)db.Lector["Id"];
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                db.closeConnection();
+            }
         }
     }
 }
