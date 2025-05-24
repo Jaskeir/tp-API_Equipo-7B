@@ -72,7 +72,6 @@ namespace tp_API_Equipo_7B.Controllers
 
             articuloDatos manager = new articuloDatos();
             Articulo articuloEliminar = manager.getArticle(id);
-            database db = new database();
 
             if (articuloEliminar.Id == 0)
             {
