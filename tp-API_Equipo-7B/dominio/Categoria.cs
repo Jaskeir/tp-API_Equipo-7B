@@ -15,14 +15,9 @@ namespace dominio
         {
             Nombre = Nombre;
         }
-<<<<<<< Updated upstream
 
-        public Categoria ()
-        {
+    
 
-        }
-=======
         public Categoria() {}
->>>>>>> Stashed changes
     }
 }

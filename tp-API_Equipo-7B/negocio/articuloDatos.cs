@@ -185,5 +185,50 @@ namespace negocio
                 db.closeConnection();
             }
         }
+
+        public void EliminarArticulo(int id)
+        {
+            database db = new database();
+            try
+            {
+
+
+                db.setQuery("DELETE FROM Articulos WHERE Id = @id");
+                db.setParameter("@id", id);
+                db.execNonQuery();
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                db.closeConnection();
+            }
+        }
+
+        public void EliminarImagenes(int id)
+        {
+            database db = new database();
+            try
+            {
+
+                // PRIMERO ELIMINAR IMAGENES POR INTEGRIDAD REFERENCIAL
+
+                db.setQuery("Delete FROM IMAGENES where IdArticulo = @id");
+                db.setParameter("@id", id);
+                db.execNonQuery();
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                db.closeConnection();
+            }
+        }
     }
 }

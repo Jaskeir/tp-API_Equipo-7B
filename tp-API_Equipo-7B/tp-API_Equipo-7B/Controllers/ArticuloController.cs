@@ -30,24 +30,17 @@ namespace tp_API_Equipo_7B.Controllers
         // GET: api/Articulo/5
         public HttpResponseMessage Get(int id)
         {
-
-
             articuloDatos articulo = new articuloDatos();
-<<<<<<< Updated upstream
             Articulo filtrado = articulo.getArticle(id);
 
-            if(filtrado.Id==0)
+            if (filtrado.Id == 0)
             {
                 return Request.CreateResponse(HttpStatusCode.NotFound, "No hay articulo con el id: " + id);
-
             }
 
             return Request.CreateResponse(HttpStatusCode.OK, filtrado);
-=======
-
-            return articulo.getArticle(id);
->>>>>>> Stashed changes
         }
+
 
         // POST: api/Articulo
         public void Post([FromBody] ArticuloDTO value)
@@ -74,8 +67,23 @@ namespace tp_API_Equipo_7B.Controllers
         }
 
         // DELETE: api/Articulo/5
-        public void Delete(int id)
+        public HttpResponseMessage Delete(int id)
         {
+
+            articuloDatos manager = new articuloDatos();
+            Articulo articuloEliminar = manager.getArticle(id);
+            database db = new database();
+
+            if (articuloEliminar.Id == 0)
+            {
+                return Request.CreateResponse(HttpStatusCode.NotFound, "No hay articulos con ese id: " + id);
+            }
+            else
+            {
+                manager.EliminarImagenes(id);
+                manager.EliminarArticulo(id);
+                return Request.CreateResponse(HttpStatusCode.OK, "Se elimino el articulo con id: " + id);
+            }
         }
     }
 }
