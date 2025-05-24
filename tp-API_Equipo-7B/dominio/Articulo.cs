@@ -19,12 +19,15 @@ namespace dominio
         public List<Imagen> Imagenes { get; set; }
         public decimal Precio { get; set; }
 
-        public Articulo()
+        public Articulo(string marca, string categoria)
         {
             Imagenes = new List<Imagen>();
-            Marca = new Marca();
-            Categoria = new Categoria();
+            Marca = new Marca(marca);
+            Categoria = new Categoria(categoria);
         }
 
+        public Articulo()
+        {
+        }
     }
 }

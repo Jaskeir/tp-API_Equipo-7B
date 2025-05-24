@@ -12,10 +12,9 @@ namespace dominio
         public string Nombre { get; set; }
 
 
-        public override string ToString()
+        public Marca(string nombre)
         {
-            return Nombre;
-
+            Nombre = Nombre;
         }
     }
 }

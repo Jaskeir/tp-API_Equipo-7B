@@ -9,12 +9,10 @@ namespace dominio
     public class Categoria
     {
         public int Id { get; set; }
-        public string Nombre { get; set; } // EN BD ESTA COMO DESCRIPCION
+        public string Nombre { get; set; }
 
-
-        public override string ToString()
-        {
-            return Nombre;  // EN BD ESTA COMO DESCRIPCION
+        public Categoria(string nombre) {
+            Nombre = Nombre;
         }
     }
 }

@@ -30,7 +30,10 @@ namespace negocio
             comando.CommandType = System.Data.CommandType.Text;
             comando.CommandText = consulta;
         }
-
+        
+        /// <summary>
+        /// Permite ejecutar consultas (select)
+        /// </summary>
         public void execQuery()
         {
             comando.Connection = conexion;
@@ -45,6 +48,9 @@ namespace negocio
             }
         }
 
+        /// <summary>
+        /// Permite ejecutar acciones (insert, update)
+        /// </summary>
         public void execNonQuery()
         {
             comando.Connection = conexion;

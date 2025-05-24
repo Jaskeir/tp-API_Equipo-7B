@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 
@@ -82,6 +83,65 @@ namespace negocio
             }
 
             return articulo;
+        }
+
+        public bool addArticleToDatabase(Articulo art)
+        {
+            database db = new database();
+            imagenesDatos imagenManager = new imagenesDatos();
+
+            try
+            {
+                art.Codigo = generateCode(art.Marca.Nombre);
+
+                db.setQuery("INSERT INTO Articulos (Codigo, Nombre, Descripcion, IdMarca, IdCategoria, Precio) VALUES (@codigo, @nombre, @descripcion, @idMarca, @idCategoria, @precio)");
+                db.setParameter("@codigo", art.Codigo);
+                db.setParameter("@nombre", art.Nombre);
+                db.setParameter("@descripcion", art.Descripcion);
+                db.setParameter("@idMarca", art.Marca.Id);
+                db.setParameter("@idCategoria", art.Categoria.Id);
+                db.setParameter("@precio", art.Precio);
+
+                db.execNonQuery();
+
+                //imagenManager.addImages(articulo);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                db.closeConnection();
+            }
+        }
+
+        public string generateCode(string marca)
+        {
+            string inicialMarca = marca.Substring(0, 1).ToUpper();
+            int codigoMarca = 1;
+            List<int> codigosExistentes = new List<int>();
+
+            database db = new database();
+            db.setQuery("SELECT Codigo FROM Articulos WHERE Codigo LIKE @codigo");
+            db.setParameter("@codigo", inicialMarca + "%");
+            db.execQuery();
+
+            while (db.Lector.Read())
+            {
+                string codigo = (string)db.Lector["Codigo"];
+                codigo = codigo.Substring(1);
+
+                codigosExistentes.Add(int.Parse(codigo));
+            }
+
+            while (codigosExistentes.Contains(codigoMarca))
+            {
+                codigoMarca++;
+            }
+
+            return inicialMarca + codigoMarca;
         }
     }
 }
