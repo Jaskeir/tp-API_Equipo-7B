@@ -42,8 +42,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="articuloDatos.cs" />
+    <Compile Include="categoriaDatos.cs" />
     <Compile Include="database.cs" />
     <Compile Include="imagenesDatos.cs" />
+    <Compile Include="marcaDatos.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

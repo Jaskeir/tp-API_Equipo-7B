@@ -16,10 +16,14 @@ namespace dominio
         {
             Nombre = Nombre;
         }
+<<<<<<< Updated upstream
 
         public Marca()
         {
 
         }
+=======
+        public Marca() {}
+>>>>>>> Stashed changes
     }
 }

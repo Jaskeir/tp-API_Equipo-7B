@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using tp_API_Equipo_7B.Models;
 
 namespace tp_API_Equipo_7B.Controllers
 {
@@ -32,6 +33,7 @@ namespace tp_API_Equipo_7B.Controllers
 
 
             articuloDatos articulo = new articuloDatos();
+<<<<<<< Updated upstream
             Articulo filtrado = articulo.getArticle(id);
 
             if(filtrado.Id==0)
@@ -41,15 +43,33 @@ namespace tp_API_Equipo_7B.Controllers
             }
 
             return Request.CreateResponse(HttpStatusCode.OK, filtrado);
+=======
+
+            return articulo.getArticle(id);
+>>>>>>> Stashed changes
         }
 
         // POST: api/Articulo
-        public void Post([FromBody]string value)
+        public void Post([FromBody] ArticuloDTO value)
         {
+            articuloDatos dbArticulos = new articuloDatos();
+            marcaDatos dbMarca = new marcaDatos();
+            categoriaDatos dbCategoria = new categoriaDatos();
+
+            // Mapeo de datos:
+            Articulo nuevoArticulo = new Articulo();
+            nuevoArticulo.Nombre = value.Nombre;
+            nuevoArticulo.Descripcion = value.Descripcion;
+            nuevoArticulo.Marca = dbMarca.getMarca(value.idMarca);
+            nuevoArticulo.Categoria = dbCategoria.getCategoria(value.idCategoria);
+            //nuevoArticulo.Imagenes = value.Imagenes;
+            nuevoArticulo.Precio = value.Precio;
+
+            dbArticulos.addArticleToDatabase(nuevoArticulo);
         }
 
         // PUT: api/Articulo/5
-        public void Put(int id, [FromBody]string value)
+        public void Put(int id, [FromBody] string value)
         {
         }
 
