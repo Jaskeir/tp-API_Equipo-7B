@@ -1,5 +1,6 @@
 ﻿using dominio;
 using negocio;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,6 +42,7 @@ namespace tp_API_Equipo_7B.Controllers
             return Request.CreateResponse(HttpStatusCode.OK, filtrado);
         }
 
+        
 
         // POST: api/Articulo
         public void Post([FromBody] ArticuloDTO value)
@@ -62,9 +64,33 @@ namespace tp_API_Equipo_7B.Controllers
         }
 
         // PUT: api/Articulo/5
-        public void Put(int id, [FromBody] string value)
+        public HttpResponseMessage Put(int id, [FromBody] ArticuloDTO art)//no incluye la imodificaion de imagenes porque esta en otra funcion
         {
+            
+            articuloDatos dbArticulos = new articuloDatos();
+            marcaDatos dbMarca = new marcaDatos();
+            categoriaDatos dbCategoria = new categoriaDatos();
+
+            Articulo modificacion = dbArticulos.getArticle(id);
+            
+
+            if (modificacion.Id == 0) {
+                return Request.CreateResponse(HttpStatusCode.NotFound, "No hay articulo con id= " + id);
+            }
+            else
+            {
+                modificacion.Nombre = art.Nombre;
+                modificacion.Descripcion = art.Descripcion;
+                modificacion.Marca = dbMarca.getMarca(art.idMarca);
+                modificacion.Categoria = dbCategoria.getCategoria(art.idCategoria);
+                modificacion.Precio = art.Precio;
+                modificacion.Id = id;
+                dbArticulos.updateArticle(modificacion);
+                return Request.CreateResponse(HttpStatusCode.OK, "Articulo modificado correctamente.");
+            }
+            
         }
+
 
         // DELETE: api/Articulo/5
         public HttpResponseMessage Delete(int id)

@@ -230,5 +230,35 @@ namespace negocio
                 db.closeConnection();
             }
         }
+        public void updateArticle(Articulo articulo)
+        {
+            
+            database db = new database();
+           
+            try
+            {
+                
+                db.setQuery("UPDATE Articulos SET Nombre = @nombre, Descripcion = @descripcion, IdMarca = @idMarca, IdCategoria = @idCategoria, Precio = @precio WHERE Id = @id");
+                db.setParameter("@id", articulo.Id);
+                db.setParameter("@codigo", articulo.Codigo);
+                db.setParameter("@nombre", articulo.Nombre);
+                db.setParameter("@descripcion", articulo.Descripcion);
+                db.setParameter("@idMarca", articulo.Marca.Id);
+                db.setParameter("@idCategoria", articulo.Categoria.Id);
+                db.setParameter("@precio", articulo.Precio);
+                db.execQuery();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                db.closeConnection();
+            }
+        }
+
+        
+
     }
 }
