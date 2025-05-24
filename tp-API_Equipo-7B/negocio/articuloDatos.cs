@@ -39,7 +39,7 @@ namespace negocio
             }
             return articulos;
         }
-
+       
         public void setArticleData(Articulo tempArticle, SqlDataReader data)
         {
             imagenesDatos imagenes = new imagenesDatos();

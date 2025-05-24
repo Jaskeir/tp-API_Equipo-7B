@@ -22,6 +22,7 @@ namespace negocio
         {
             conexion = new SqlConnection("server=.\\SQLEXPRESS; database=PROMOS_DB; integrated security=true");
             comando = new SqlCommand();
+            
         }
 
         public void setQuery(string consulta)

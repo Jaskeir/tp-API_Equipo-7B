@@ -19,9 +19,11 @@ namespace tp_API_Equipo_7B.Controllers
         }
 
         // GET: api/Articulo/5
-        public string Get(int id)
+        public Articulo Get(int id)
         {
-            return "value";
+            articuloDatos articulo = new articuloDatos();
+            
+            return articulo.getArticle(id);
         }
 
         // POST: api/Articulo
