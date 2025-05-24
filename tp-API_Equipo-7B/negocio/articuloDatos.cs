@@ -45,6 +45,9 @@ namespace negocio
         {
             imagenesDatos imagenes = new imagenesDatos();
 
+            tempArticle.Marca = new Marca();
+            tempArticle.Categoria = new Categoria();
+
             tempArticle.Id = (int)data["Id"];
             tempArticle.Codigo = (string)data["Codigo"];
             tempArticle.Nombre = (string)data["Nombre"];

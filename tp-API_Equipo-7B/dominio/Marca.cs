@@ -16,5 +16,10 @@ namespace dominio
         {
             Nombre = Nombre;
         }
+
+        public Marca()
+        {
+
+        }
     }
 }

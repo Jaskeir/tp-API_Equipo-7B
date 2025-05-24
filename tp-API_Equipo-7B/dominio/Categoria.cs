@@ -14,5 +14,10 @@ namespace dominio
         public Categoria(string nombre) {
             Nombre = Nombre;
         }
+
+        public Categoria ()
+        {
+
+        }
     }
 }

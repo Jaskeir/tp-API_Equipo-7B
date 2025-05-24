@@ -12,18 +12,35 @@ namespace tp_API_Equipo_7B.Controllers
     public class ArticuloController : ApiController
     {
         // GET: api/Articulo
-        public IEnumerable<Articulo> Get()
+        public HttpResponseMessage Get()
         {
             articuloDatos articulo = new articuloDatos();
-            return articulo.getArticles();
+
+            List<Articulo> listaArticulos = articulo.getArticles();
+
+            if (listaArticulos.Count == 0)
+            {
+                return Request.CreateResponse(HttpStatusCode.NotFound, "No hay articulos en la lista");
+            }
+
+            return Request.CreateResponse(HttpStatusCode.OK, listaArticulos);
         }
 
         // GET: api/Articulo/5
-        public Articulo Get(int id)
+        public HttpResponseMessage Get(int id)
         {
+
+
             articuloDatos articulo = new articuloDatos();
-            
-            return articulo.getArticle(id);
+            Articulo filtrado = articulo.getArticle(id);
+
+            if(filtrado.Id==0)
+            {
+                return Request.CreateResponse(HttpStatusCode.NotFound, "No hay articulo con el id: " + id);
+
+            }
+
+            return Request.CreateResponse(HttpStatusCode.OK, filtrado);
         }
 
         // POST: api/Articulo
