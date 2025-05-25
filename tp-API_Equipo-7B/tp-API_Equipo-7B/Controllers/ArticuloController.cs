@@ -42,7 +42,7 @@ namespace tp_API_Equipo_7B.Controllers
             return Request.CreateResponse(HttpStatusCode.OK, filtrado);
         }
 
-        
+
 
         // POST: api/Articulo
         public void Post([FromBody] ArticuloDTO value)
@@ -57,10 +57,16 @@ namespace tp_API_Equipo_7B.Controllers
             nuevoArticulo.Descripcion = value.Descripcion;
             nuevoArticulo.Marca = dbMarca.getMarca(value.idMarca);
             nuevoArticulo.Categoria = dbCategoria.getCategoria(value.idCategoria);
-            //nuevoArticulo.Imagenes = value.Imagenes;
             nuevoArticulo.Precio = value.Precio;
 
             dbArticulos.addArticleToDatabase(nuevoArticulo);
+        }
+
+        // POST: api/Articulo
+        public void Post([FromBody] List<string> imagenes)
+        {
+            articuloDatos dbArticulos = new articuloDatos();
+
         }
 
         // PUT: api/Articulo/5

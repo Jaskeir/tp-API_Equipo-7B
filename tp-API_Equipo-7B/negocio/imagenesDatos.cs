@@ -59,25 +59,22 @@ namespace negocio
             }
         }
 
-        public bool addImages(Articulo articulo)
+        public bool addImages(int idArticulo, List<string> imagenes)
         {
-            database db = new database();
-            articuloDatos articuloManager = new articuloDatos();
-            int idArticulo = articuloManager.getId(articulo);
-            foreach (Imagen img in articulo.Imagenes)
+            foreach (string img in imagenes)
             {
-                addImage(idArticulo, img.Url);
+                addImage(idArticulo, img);
             }
             return true;
         }
 
-        public bool removeImage(Articulo articulo, string url)
+        public bool removeImage(int idArticulo, string url)
         {
             database db = new database();
             try
             {
                 db.setQuery("DELETE FROM Imagenes WHERE IdArticulo = @id AND ImagenUrl = @url");
-                db.setParameter("@id", articulo.Id);
+                db.setParameter("@id", idArticulo);
                 db.setParameter("@url", url);
                 db.execNonQuery();
                 return true;
