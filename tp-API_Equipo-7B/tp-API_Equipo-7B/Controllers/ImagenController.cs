@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Security.Policy;
 using System.Web.Http;
 using tp_API_Equipo_7B.Models;
 
@@ -101,5 +102,46 @@ namespace tp_API_Equipo_7B.Controllers
             }
         }
 
+        [HttpDelete]
+        [Route("{id}")]
+        // Borra el listado que le pasa
+        public HttpResponseMessage Delete(int id, [FromBody] ImagenDTO imgs)
+        {
+            if (imgs == null)
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
+            }
+
+            imagenesDatos imagenes = new imagenesDatos();
+            articuloDatos articulos = new articuloDatos();
+
+            if (articulos.getArticle(id).Id == -1)
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest, "No existe artículo con esta ID.");
+            }
+
+            foreach (string imgURL in imgs.imagenesURL)
+            {
+                imagenes.removeImage(id, imgURL);
+            }
+            return Request.CreateResponse(HttpStatusCode.OK, "Imagenes borradas.");
+        }
+
+        [HttpDelete]
+        [Route("{id}/deleteAll")]
+        // Borra todas las imagenes
+        public HttpResponseMessage Delete(int id)
+        {
+            imagenesDatos imagenes = new imagenesDatos();
+            articuloDatos articulos = new articuloDatos();
+
+            if (articulos.getArticle(id).Id == -1)
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest, "No existe artículo con esta ID.");
+            }
+
+            imagenes.removeAllImages(id);
+            return Request.CreateResponse(HttpStatusCode.OK, "Imagenes borradas.");
+        }
     }
 }
