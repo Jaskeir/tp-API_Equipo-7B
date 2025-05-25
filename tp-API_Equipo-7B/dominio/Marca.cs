@@ -20,7 +20,7 @@ namespace dominio
 
         public Marca()
         {
-
+            Id = -1;
         }
 
         

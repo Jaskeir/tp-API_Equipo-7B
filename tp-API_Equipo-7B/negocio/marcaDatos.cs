@@ -13,7 +13,6 @@ namespace negocio
         {
             database db = new database();
             Marca marca = new Marca();
-            bool validar = false;
             try
             {
                 db.setQuery("SELECT Id, Descripcion AS Nombre FROM Marcas WHERE Id = @id");
@@ -24,7 +23,6 @@ namespace negocio
                 {
                     marca.Id = (int)db.Lector["Id"];
                     marca.Nombre = (string)db.Lector["Nombre"];
-                    validar = true;
                 }
             }
             catch (Exception ex)
@@ -35,10 +33,6 @@ namespace negocio
             finally
             {
                 db.closeConnection();
-            }
-            if (!validar)
-            {
-                marca.Id = -1;
             }
             return marca;
         }

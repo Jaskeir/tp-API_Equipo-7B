@@ -18,6 +18,8 @@ namespace dominio
 
     
 
-        public Categoria() {}
+        public Categoria() {
+            Id = -1;
+        }
     }
 }
