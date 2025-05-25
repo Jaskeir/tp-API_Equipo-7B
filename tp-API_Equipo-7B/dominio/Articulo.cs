@@ -28,6 +28,7 @@ namespace dominio
 
         public Articulo()
         {
+            Id = -1;
         }
     }
 }

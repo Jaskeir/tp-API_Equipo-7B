@@ -1,5 +1,6 @@
 ﻿using dominio;
 using negocio;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,23 +11,70 @@ using tp_API_Equipo_7B.Models;
 
 namespace tp_API_Equipo_7B.Controllers
 {
+    [RoutePrefix("api/Imagen")]
     public class ImagenController : ApiController
     {
+        // GET: api/Imagen/4
+        [HttpGet]
+        [Route("{idArticulo:int}")]
+        public HttpResponseMessage Get(int idArticulo) // Para obtener el listado de imagenes de un articulo
+        {
+            imagenesDatos imagenes = new imagenesDatos();
+
+            try
+            {
+                List<Imagen> imagenesArticulo = imagenes.Listar(idArticulo);
+                if (imagenesArticulo.Count == 0)
+                {
+                    return Request.CreateResponse(HttpStatusCode.NotFound, "No hay imagenes para este id de artículo");
+                }
+                return Request.CreateResponse(HttpStatusCode.OK, imagenesArticulo.Select(imagen => imagen.Url).ToList());
+            }
+            catch (Exception)
+            {
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, "No hay imagenes para este id de artículo");
+            }
+        } //    OK
+
         // POST: api/Imagen
-        public void Post([FromBody] ImagenDTO imgs)
+        // Para insertar imágenes a un artículo
+        [HttpPost]
+        [Route("{id}")]
+        public HttpResponseMessage Post(int id, [FromBody] ImagenDTO imgs)
         {
-            imagenesDatos imagenes = new imagenesDatos();
+            if (imgs == null)
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
+            }
 
-            imagenes.addImages(imgs.idArticulo, imgs.imagenesURL);
+            imagenesDatos imagenes = new imagenesDatos();
+            articuloDatos articulos = new articuloDatos();
+            if (articulos.getArticle(id).Id == -1)
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest, "No existe artículo con esta ID.");
+            }
+            try
+            {
+                if (imagenes.addImages(id, imgs.imagenesURL))
+                {
+                    return Request.CreateResponse(HttpStatusCode.OK, "Imagenes añadidas correctamente.");
+                }
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, "Ocurrió un error inesperado.");
+            }
+            catch (Exception ex)
+            {
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, "Ocurrió un error inesperado.");
+            }
         }
 
-        // PUT: api/Articulo/5
-        public void Put([FromBody] ImagenDTO imgs)
-        {
-            imagenesDatos imagenes = new imagenesDatos();
+        // PUT: api/Imagen/
+        //public HttpResponseMessage Put([FromBody] ImagenDTO imgs)
+        //{
+        //    imagenesDatos imagenes = new imagenesDatos();
 
-            imagenes.addImages(imgs.idArticulo, imgs.imagenesURL);
+        //    imagenes.addImages(imgs.idArticulo, imgs.imagenesURL);
 
-        }
+        //}
+
     }
 }

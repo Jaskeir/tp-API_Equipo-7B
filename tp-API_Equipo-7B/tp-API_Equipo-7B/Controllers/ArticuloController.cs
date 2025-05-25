@@ -62,13 +62,6 @@ namespace tp_API_Equipo_7B.Controllers
             dbArticulos.addArticleToDatabase(nuevoArticulo);
         }
 
-        // POST: api/Articulo
-        public void Post([FromBody] List<string> imagenes)
-        {
-            articuloDatos dbArticulos = new articuloDatos();
-
-        }
-
         // PUT: api/Articulo/5
         public HttpResponseMessage Put(int id, [FromBody] ArticuloDTO art)//no incluye la imodificaion de imagenes porque esta en otra funcion
         {
@@ -103,6 +96,7 @@ namespace tp_API_Equipo_7B.Controllers
         {
 
             articuloDatos manager = new articuloDatos();
+            // Qué pasa si no se pasa un id?
             Articulo articuloEliminar = manager.getArticle(id);
 
             if (articuloEliminar.Id == 0)

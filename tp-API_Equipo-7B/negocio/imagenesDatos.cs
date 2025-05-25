@@ -61,9 +61,20 @@ namespace negocio
 
         public bool addImages(int idArticulo, List<string> imagenes)
         {
+            int imgAdded = 0;
+            if (imagenes == null)
+                return false;
             foreach (string img in imagenes)
             {
-                addImage(idArticulo, img);
+                if (img.Length != 0)
+                {
+                    addImage(idArticulo, img);
+                    imgAdded++;
+                }
+            }
+            if (imgAdded == 0)
+            {
+                return false;
             }
             return true;
         }
@@ -88,6 +99,25 @@ namespace negocio
                 db.closeConnection();
             }
         }
-        
+
+        public bool removeAllImages(Articulo articulo)
+        {
+            database db = new database();
+            try
+            {
+                db.setQuery("DELETE FROM Imagenes WHERE IdArticulo = @id");
+                db.setParameter("@id", articulo.Id);
+                db.execNonQuery();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                db.closeConnection();
+            }
+        }
     }
 }
