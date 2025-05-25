@@ -1,4 +1,5 @@
-﻿using negocio;
+﻿using dominio;
+using negocio;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,15 @@ namespace tp_API_Equipo_7B.Controllers
             imagenesDatos imagenes = new imagenesDatos();
 
             imagenes.addImages(imgs.idArticulo, imgs.imagenesURL);
+        }
+
+        // PUT: api/Articulo/5
+        public void Put([FromBody] ImagenDTO imgs)
+        {
+            imagenesDatos imagenes = new imagenesDatos();
+
+            imagenes.addImages(imgs.idArticulo, imgs.imagenesURL);
+
         }
     }
 }
