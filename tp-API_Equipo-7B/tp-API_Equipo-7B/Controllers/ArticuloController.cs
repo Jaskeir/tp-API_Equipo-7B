@@ -24,7 +24,6 @@ namespace tp_API_Equipo_7B.Controllers
             {
                 return Request.CreateResponse(HttpStatusCode.NotFound, "No hay articulos en la lista");
             }
-
             return Request.CreateResponse(HttpStatusCode.OK, listaArticulos);
         }
 
@@ -33,48 +32,64 @@ namespace tp_API_Equipo_7B.Controllers
         {
             articuloDatos articulo = new articuloDatos();
             Articulo filtrado = articulo.getArticle(id);
-
-            if (filtrado.Id == 0)
+            if (filtrado.Id == -1)
             {
                 return Request.CreateResponse(HttpStatusCode.NotFound, "No hay articulo con el id: " + id);
             }
 
+            imagenesDatos imagenes = new imagenesDatos();
+            List<Imagen> imagenesArticulo = imagenes.Listar(id);
+
             return Request.CreateResponse(HttpStatusCode.OK, filtrado);
         }
 
-
-
         // POST: api/Articulo
-        public void Post([FromBody] ArticuloDTO value)
+        public HttpResponseMessage Post([FromBody] ArticuloDTO value)
         {
+            if (value == null)
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
+            }
             articuloDatos dbArticulos = new articuloDatos();
             marcaDatos dbMarca = new marcaDatos();
             categoriaDatos dbCategoria = new categoriaDatos();
 
-            // Mapeo de datos:
-            Articulo nuevoArticulo = new Articulo();
-            nuevoArticulo.Nombre = value.Nombre;
-            nuevoArticulo.Descripcion = value.Descripcion;
-            nuevoArticulo.Marca = dbMarca.getMarca(value.idMarca);
-            nuevoArticulo.Categoria = dbCategoria.getCategoria(value.idCategoria);
-            nuevoArticulo.Precio = value.Precio;
+            try
+            {
+                // Mapeo de datos:
+                Articulo nuevoArticulo = new Articulo();
+                nuevoArticulo.Nombre = value.Nombre;
+                nuevoArticulo.Descripcion = value.Descripcion;
+                nuevoArticulo.Marca = dbMarca.getMarca(value.idMarca);
+                nuevoArticulo.Categoria = dbCategoria.getCategoria(value.idCategoria);
+                nuevoArticulo.Precio = value.Precio;
 
-            dbArticulos.addArticleToDatabase(nuevoArticulo);
+                dbArticulos.addArticleToDatabase(nuevoArticulo);
+
+                return Request.CreateResponse(HttpStatusCode.OK, "Se insertó el artículo correctamente");
+            }
+            catch (Exception)
+            {
+                return Request.CreateResponse(HttpStatusCode.InternalServerError);
+            }
         }
 
         // PUT: api/Articulo/5
-        public HttpResponseMessage Put(int id, [FromBody] ArticuloDTO art)//no incluye la imodificaion de imagenes porque esta en otra funcion
+        public HttpResponseMessage Put(int id, [FromBody] ArticuloDTO art) // No incluye la modificaion de imagenes porque esta en otra funcion
         {
-            
+            if (art == null)
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
+            }
             articuloDatos dbArticulos = new articuloDatos();
             marcaDatos dbMarca = new marcaDatos();
             categoriaDatos dbCategoria = new categoriaDatos();
 
             Articulo modificacion = dbArticulos.getArticle(id);
-            
 
-            if (modificacion.Id == 0) {
-                return Request.CreateResponse(HttpStatusCode.NotFound, "No hay articulo con id= " + id);
+            if (modificacion.Id == -1)
+            {
+                return Request.CreateResponse(HttpStatusCode.NotFound, "No hay articulo con id = " + id);
             }
             else
             {
@@ -87,28 +102,22 @@ namespace tp_API_Equipo_7B.Controllers
                 dbArticulos.updateArticle(modificacion);
                 return Request.CreateResponse(HttpStatusCode.OK, "Articulo modificado correctamente.");
             }
-            
         }
-
 
         // DELETE: api/Articulo/5
         public HttpResponseMessage Delete(int id)
         {
-
             articuloDatos manager = new articuloDatos();
-            // Qué pasa si no se pasa un id?
+            imagenesDatos imagenes = new imagenesDatos();
             Articulo articuloEliminar = manager.getArticle(id);
 
-            if (articuloEliminar.Id == 0)
+            if (articuloEliminar.Id == -1)
             {
                 return Request.CreateResponse(HttpStatusCode.NotFound, "No hay articulos con ese id: " + id);
             }
-            else
-            {
-                manager.EliminarImagenes(id);
-                manager.EliminarArticulo(id);
-                return Request.CreateResponse(HttpStatusCode.OK, "Se elimino el articulo con id: " + id);
-            }
+            imagenes.removeAllImages(id);
+            manager.EliminarArticulo(id);
+            return Request.CreateResponse(HttpStatusCode.OK, "Se elimino el articulo con id: " + id);
         }
     }
 }
