@@ -19,7 +19,7 @@ namespace negocio
             database db = new database();
             try
             {
-                db.setQuery("SELECT A.Id, A.Codigo, A.Nombre, A.Descripcion,M.Id AS IDMarca ,M.Descripcion AS Marca, C.Id AS IdCate,C.Descripcion AS Categoria, Precio FROM Articulos A INNER JOIN Marcas M ON A.IdMarca = M.Id INNER JOIN Categorias C ON A.IdCategoria = C.Id");
+                db.setQuery("SELECT A.Id, A.Codigo, A.Nombre, A.Descripcion,M.Id AS IdMarca ,M.Descripcion AS Marca, C.Id AS IdCate,C.Descripcion AS Categoria, Precio FROM Articulos A INNER JOIN Marcas M ON A.IdMarca = M.Id INNER JOIN Categorias C ON A.IdCategoria = C.Id");
                 db.execQuery();
 
                 while (db.Lector.Read())
