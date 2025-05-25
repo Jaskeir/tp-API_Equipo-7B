@@ -119,5 +119,25 @@ namespace negocio
                 db.closeConnection();
             }
         }
+
+        public bool removeAllImages(int idArticulo)
+        {
+            database db = new database();
+            try
+            {
+                db.setQuery("DELETE FROM Imagenes WHERE IdArticulo = @id");
+                db.setParameter("@id", idArticulo);
+                db.execNonQuery();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                db.closeConnection();
+            }
+        }
     }
 }

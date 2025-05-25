@@ -67,14 +67,39 @@ namespace tp_API_Equipo_7B.Controllers
             }
         }
 
+        [HttpPut]
+        [Route("{id}")]
         // PUT: api/Imagen/
-        //public HttpResponseMessage Put([FromBody] ImagenDTO imgs)
-        //{
-        //    imagenesDatos imagenes = new imagenesDatos();
+        // Para actualizar el listado de imagenes (reemplaza la totalidad de las fotos por la nueva lista)
+        public HttpResponseMessage Put(int id, [FromBody] ImagenDTO imgs)
+        {
+            if (imgs == null)
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
+            }
 
-        //    imagenes.addImages(imgs.idArticulo, imgs.imagenesURL);
+            imagenesDatos imagenes = new imagenesDatos();
+            articuloDatos articulos = new articuloDatos();
 
-        //}
+            if (articulos.getArticle(id).Id == -1)
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest, "No existe artículo con esta ID.");
+            }
+
+            imagenes.removeAllImages(id);
+            try
+            {
+                if (imagenes.addImages(id, imgs.imagenesURL))
+                {
+                    return Request.CreateResponse(HttpStatusCode.OK, "Imagenes actualizadas correctamente.");
+                }
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, "Ocurrió un error inesperado.");
+            }
+            catch (Exception)
+            {
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, "Ocurrió un error inesperado.");
+            }
+        }
 
     }
 }
