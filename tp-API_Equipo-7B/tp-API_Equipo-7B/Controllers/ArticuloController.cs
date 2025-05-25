@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.UI.WebControls.WebParts;
 using tp_API_Equipo_7B.Models;
 
 namespace tp_API_Equipo_7B.Controllers
@@ -60,7 +61,15 @@ namespace tp_API_Equipo_7B.Controllers
                 Articulo nuevoArticulo = new Articulo();
                 nuevoArticulo.Nombre = value.Nombre;
                 nuevoArticulo.Descripcion = value.Descripcion;
+                if (dbMarca.getMarca(value.idMarca).Id == -1)
+                {
+                    return Request.CreateResponse(HttpStatusCode.NotFound, "No hay Marca con id = " + value.idMarca);
+                }
                 nuevoArticulo.Marca = dbMarca.getMarca(value.idMarca);
+                if (dbCategoria.getCategoria(value.idCategoria).Id == -1)
+                {
+                    return Request.CreateResponse(HttpStatusCode.NotFound, "No hay Categoria con id = " + value.idCategoria);
+                }
                 nuevoArticulo.Categoria = dbCategoria.getCategoria(value.idCategoria);
                 nuevoArticulo.Precio = value.Precio;
 
@@ -95,7 +104,15 @@ namespace tp_API_Equipo_7B.Controllers
             {
                 modificacion.Nombre = art.Nombre;
                 modificacion.Descripcion = art.Descripcion;
+                if (dbMarca.getMarca(art.idMarca).Id == -1)
+                {
+                    return Request.CreateResponse(HttpStatusCode.NotFound, "No hay Marca con id = " + art.idMarca);
+                }
                 modificacion.Marca = dbMarca.getMarca(art.idMarca);
+                if (dbCategoria.getCategoria(art.idCategoria).Id == -1)
+                {
+                    return Request.CreateResponse(HttpStatusCode.NotFound, "No hay Categoria con id = " + art.idCategoria);
+                }
                 modificacion.Categoria = dbCategoria.getCategoria(art.idCategoria);
                 modificacion.Precio = art.Precio;
                 modificacion.Id = id;

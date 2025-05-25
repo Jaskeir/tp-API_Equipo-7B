@@ -3,7 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Xml.Schema;
 
 namespace negocio
 {
@@ -13,7 +15,7 @@ namespace negocio
         {
             database db = new database();
             Categoria categoria = new Categoria();
-
+            bool validar = false;
             try
             {
                 db.setQuery("SELECT Id, Descripcion AS Nombre FROM Categorias WHERE Id = @id");
@@ -24,6 +26,7 @@ namespace negocio
                 {
                     categoria.Id = (int)db.Lector["Id"];
                     categoria.Nombre = (string)db.Lector["Nombre"];
+                    validar = true;
                 }
             }
             catch (Exception ex)
@@ -35,7 +38,10 @@ namespace negocio
             {
                 db.closeConnection();
             }
-
+            if (!validar)
+            {
+                categoria.Id = -1;
+            }
             return categoria;
         }
     }
