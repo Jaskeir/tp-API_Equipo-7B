@@ -19,7 +19,7 @@ namespace negocio
             database db = new database();
             try
             {
-                db.setQuery("SELECT A.Id, A.Codigo, A.Nombre, A.Descripcion, M.Descripcion AS Marca, C.Descripcion AS Categoria, Precio FROM Articulos A INNER JOIN Marcas M ON A.IdMarca = M.Id INNER JOIN Categorias C ON A.IdCategoria = C.Id");
+                db.setQuery("SELECT A.Id, A.Codigo, A.Nombre, A.Descripcion,M.Id AS IDMarca ,M.Descripcion AS Marca, C.Id AS IdCate,C.Descripcion AS Categoria, Precio FROM Articulos A INNER JOIN Marcas M ON A.IdMarca = M.Id INNER JOIN Categorias C ON A.IdCategoria = C.Id");
                 db.execQuery();
 
                 while (db.Lector.Read())
@@ -52,7 +52,9 @@ namespace negocio
             tempArticle.Codigo = (string)data["Codigo"];
             tempArticle.Nombre = (string)data["Nombre"];
             tempArticle.Descripcion = (string)data["Descripcion"];
+            tempArticle.Marca.Id = (int)data["IdMarca"];
             tempArticle.Marca.Nombre = (string)data["Marca"];
+            tempArticle.Categoria.Id = (int)data["IdCate"];
             tempArticle.Categoria.Nombre = (string)data["Categoria"];
             tempArticle.Precio = Math.Round((decimal)data["Precio"], 2);
             tempArticle.Imagenes = imagenes.Listar((int)data["Id"]);
@@ -66,7 +68,7 @@ namespace negocio
 
             try
             {
-                db.setQuery("SELECT A.Id, A.Codigo, A.Nombre, A.Descripcion, M.Descripcion AS Marca, C.Descripcion AS Categoria, Precio FROM Articulos A INNER JOIN Marcas M ON A.IdMarca = M.Id INNER JOIN Categorias C ON A.IdCategoria = C.Id WHERE A.Id = @id");
+                db.setQuery("SELECT A.Id, A.Codigo, A.Nombre, A.Descripcion, M.Id as IdMarca ,M.Descripcion AS Marca, C.Id AS IdCate ,C.Descripcion AS Categoria, Precio FROM Articulos A INNER JOIN Marcas M ON A.IdMarca = M.Id INNER JOIN Categorias C ON A.IdCategoria = C.Id WHERE A.Id = @id");
                 db.setParameter("id", id);
                 db.execQuery();
 
